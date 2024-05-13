@@ -1,4 +1,4 @@
-import { getData,getDataById } from "../db/temp_db.js"
+import { getData,getDataById,setData } from "../db/temp_db.js"
 
 const getAllContact=(req,res)=>{
     res.status(200).json({
@@ -12,4 +12,12 @@ const getContactById=(req,res)=>{
     })
 }
 
-export {getAllContact,getContactById}
+const createNewContact=(req,res)=>{
+    const {id,name}=req.body
+    setData(id,name)
+    res.status(201).json({
+        "data":"data got saved successfully !!!"
+    })
+}
+
+export {getAllContact,getContactById,createNewContact}
