@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import 'dotenv/config'
 
-const DB_CONN_STRING=process.env?.CONNECTION_STRING || 'mongodb://localhost:27017/learning_bkup'
+const DB_CONN_STRING = process.env?.CONNECTION_STRING || 'mongodb://localhost:27017/learning_bkup'
 
 console.log(`DB_CONN_STRING : ${DB_CONN_STRING}`);
 
@@ -14,11 +14,11 @@ const options = {
 	useUnifiedTopology: true,
 };
 
-const db_conn=async (mongoURI,options)=>{
-    try {
-        await mongoose.connect(mongoURI,options)
-    } catch (error) {
-        console.error('Error connecting to MongoDB:', error.message);
+const db_conn = async (mongoURI, options) => {
+	try {
+		await mongoose.connect(mongoURI, options)
+	} catch (error) {
+		console.error('Error connecting to MongoDB:', error.message);
 
 		// Handle specific error conditions
 		if (error.name === 'MongoNetworkError') {
@@ -30,10 +30,10 @@ const db_conn=async (mongoURI,options)=>{
 			// Handle other types of errors
 			console.error('An unexpected error occurred:', error);
 		}
-    }
+	}
 }
 
-db_conn(mongoURI,options)
+db_conn(mongoURI, options)
 
 // Handling connection events
 const db = mongoose.connection;
@@ -54,7 +54,7 @@ db.on('disconnected', () => {
 process.on('SIGINT', () => {
 	mongoose.connection.close(() => {
 		console.log('Mongoose connection is disconnected'
-		+ ' due to application termination');
+			+ ' due to application termination');
 		process.exit(0);
 	});
 });
