@@ -14,6 +14,10 @@ const getContactById=(req,res)=>{
 
 const createNewContact=(req,res)=>{
     const {id,name}=req.body
+    if(!id || !name){
+        res.status(400)
+        throw new Error("All fields are manditory")
+    }
     setData(id,name)
     res.status(201).json({
         "data":"data got saved successfully !!!"
