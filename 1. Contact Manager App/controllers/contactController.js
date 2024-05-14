@@ -1,4 +1,4 @@
-import { getData,getDataById,setData } from "../db/temp_db.js"
+import { getData,getDataById,setData,updateData} from "../db/temp_db.js"
 
 const getAllContact=(req,res)=>{
     res.status(200).json({
@@ -20,4 +20,13 @@ const createNewContact=(req,res)=>{
     })
 }
 
-export {getAllContact,getContactById,createNewContact}
+const updateOldContact=(req,res)=>{
+    const id=req.params.id
+    const {name}=req.body
+    updateData(id,name)
+    res.status(201).json({
+        "data":"data got updated successfully !!!"
+    })
+}
+
+export {getAllContact,getContactById,createNewContact,updateOldContact}
