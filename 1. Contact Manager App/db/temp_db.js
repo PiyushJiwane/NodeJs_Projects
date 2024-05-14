@@ -22,4 +22,10 @@ const updateData=(key,value)=>{
     })
 }
 
-export {getData,setData,getDataById,updateData}
+const deleteData=(key)=>{
+    const id=Number(key)
+    db_map.delete(id)
+    console.log(db_map);
+}
+
+export {getData,setData,getDataById,updateData,deleteData}
