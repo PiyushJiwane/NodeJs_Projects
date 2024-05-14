@@ -11,7 +11,7 @@ const errorHandler=(err,req,res,next)=>{
         case errorConstants.VALIDATION_ERROR:
             sendResponse(res,code,"Validation Error",err)
             break;
-        case NOT_FOUND:
+        case errorConstants.NOT_FOUND:
             sendResponse(res,code,"Not Found",err)
             break;
         default:
