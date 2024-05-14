@@ -1,44 +1,78 @@
+import expressAsyncHandler from "express-async-handler"
 import { deleteData, getData,getDataById,setData,updateData} from "../db/temp_db.js"
+import conatctModel from "../models/conatctModel.js"
 
-const getAllContact=(req,res)=>{
+const getAllContact=expressAsyncHandler(async (req,res)=>{
     res.status(200).json({
-        "data":getData()
+        "data":await conatctModel.find()
     })
-}
+})
 
-const getContactById=(req,res)=>{
+const getContactById=expressAsyncHandler(async (req,res)=>{
+    const contactId=req.params.id
+
+    const contactDetailsById=await conatctModel.findById(contactId)
+
+    if(!contactDetailsById){
+        res.status(404)
+        throw new Error("Conatct Id not found")
+    }
+
     res.status(200).json({
-        "data":getDataById(req.params.id)
+        "data":contactDetailsById
     })
-}
+})
 
-const createNewContact=(req,res)=>{
-    const {id,name}=req.body
-    if(!id || !name){
+const createNewContact=expressAsyncHandler(async (req,res)=>{
+    const {name,email,phone}=req.body
+
+    if(!name || !email || !phone){
         res.status(400)
         throw new Error("All fields are manditory")
     }
-    setData(id,name)
+
+    const newContact=new conatctModel({
+        name,email,phone
+    })
+
+    await newContact.save()
+
     res.status(201).json({
         "data":"data got saved successfully !!!"
     })
-}
+})
 
-const updateOldContact=(req,res)=>{
-    const id=req.params.id
-    const {name}=req.body
-    updateData(id,name)
+const updateOldContact=expressAsyncHandler(async (req,res)=>{
+    const contactId=req.params.id
+    
+    const contactDetailsById=await conatctModel.findById(contactId)
+ 
+    if(!contactDetailsById){
+        res.status(404)
+        throw new Error("Conatct Id not found")
+    }
+
+    await conatctModel.findByIdAndUpdate(contactId,req.body,{new:true})
     res.status(201).json({
         "data":"data got updated successfully !!!"
     })
-}
+})
 
-const deleteOldContact=(req,res)=>{
-    const id=req.params.id
-    deleteData(id)
+const deleteOldContact=expressAsyncHandler(async (req,res)=>{
+    const contactId=req.params.id
+    
+    const contactDetailsById=await conatctModel.findById(contactId)
+ 
+    if(!contactDetailsById){
+        res.status(404)
+        throw new Error("Conatct Id not found")
+    }
+
+    await conatctModel.findByIdAndDelete(contactId)
+    
     res.status(201).json({
         "data":"data got deleted successfully !!!"
     })
-}
+})
 
 export {getAllContact,getContactById,createNewContact,updateOldContact,deleteOldContact}
