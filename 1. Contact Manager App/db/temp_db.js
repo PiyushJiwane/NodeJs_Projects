@@ -13,4 +13,13 @@ const setData=(key,value)=>{
     db_map.set(key,value)
 }
 
-export {getData,setData,getDataById}
+const updateData=(key,value)=>{
+    const id=Number(key)
+    db_map.forEach((v,k)=>{
+        if(id===k){
+            db_map.set(id,value)
+        }
+    })
+}
+
+export {getData,setData,getDataById,updateData}
