@@ -4,7 +4,7 @@ import conatctModel from "../models/conatctModel.js"
 
 const getAllContact = expressAsyncHandler(async (req, res) => {
     res.status(200).json({
-        "data": await conatctModel.find()
+        "data": await conatctModel.find({ user_id: req.user._id })
     })
 })
 
@@ -24,6 +24,7 @@ const getContactById = expressAsyncHandler(async (req, res) => {
 })
 
 const createNewContact = expressAsyncHandler(async (req, res) => {
+    console.log(`---->${req.user._id}`);
     const { name, email, phone } = req.body
 
     if (!name || !email || !phone) {
@@ -32,6 +33,7 @@ const createNewContact = expressAsyncHandler(async (req, res) => {
     }
 
     const newContact = new conatctModel({
+        user_id: req.user._id,
         name, email, phone
     })
 
@@ -47,7 +49,7 @@ const updateOldContact = expressAsyncHandler(async (req, res) => {
 
     const contactDetailsById = await conatctModel.findById(contactId)
 
-    if (!contactDetailsById) {
+    if (!contactDetailsById || contactDetailsById.user_id.toString() !== req.user._id) {
         res.status(404)
         throw new Error("Conatct Id not found")
     }
@@ -63,7 +65,7 @@ const deleteOldContact = expressAsyncHandler(async (req, res) => {
 
     const contactDetailsById = await conatctModel.findById(contactId)
 
-    if (!contactDetailsById) {
+    if (!contactDetailsById || contactDetailsById.user_id.toString() !== req.user._id) {
         res.status(404)
         throw new Error("Conatct Id not found")
     }
