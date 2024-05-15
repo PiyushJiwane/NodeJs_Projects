@@ -13,9 +13,7 @@ db
 
 app.use(express.json())
 app.use("/api/contact", contactRouter)
-app.use("/api/user",userRouter)
-app.use(errorHandler)
-app.use(jwtTokenValidater)
+app.use("/api/user", userRouter)
 
 const PORT = process.env?.PORT || 3000
 
