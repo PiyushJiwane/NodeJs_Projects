@@ -1,7 +1,10 @@
 import expressAsyncHandler from "express-async-handler";
 import userModel from "../models/userModel.js";
+import bcrypt from "bcrypt"
 
-const registration=expressAsyncHandler(async (req,res)=>{
+const saltRound=10
+
+const registration=async (req,res)=>{
     const { username, email, password } = req.body
 
     if (!username || !email || !password) {
@@ -9,8 +12,10 @@ const registration=expressAsyncHandler(async (req,res)=>{
         throw new Error("All fields are manditory")
     }
 
+    const bcrypt_password=await bcrypt.hash(password,saltRound)
+
     const newUser = new userModel({
-        username, email, password
+        username, email, password:bcrypt_password
     })
 
     await newUser.save()
@@ -18,7 +23,7 @@ const registration=expressAsyncHandler(async (req,res)=>{
     res.status(201).json({
         "data": "data got saved successfully !!!"
     })
-})
+}
 
 const login=(req,res)=>{
     console.log("registration");
