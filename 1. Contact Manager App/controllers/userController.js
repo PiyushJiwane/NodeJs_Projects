@@ -57,7 +57,7 @@ const login=expressAsyncHandler(async (req,res)=>{
 })
 
 const currentUser=(req,res)=>{
-    console.log("registration");
+    res.status(200).json(req.user.u_name)
 }
 
 export {registration,login,currentUser}
